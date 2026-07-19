@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Joel's Number Guessing Game</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="/socket.io/socket.io.js"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="background"></div>
+
+
+<div class="container">
+
+
+<header>
+
+<h1>
+🎯 Joel's Number Guessing Game
+</h1>
+
+<p>
+Multiplayer • Guess the Secret Number
+</p>
+
+<p id="connectionStatus">
+Connecting...
+</p>
+
+
+</header>
+
+
+
+<section id="home" class="screen">
+
+
+<input id="playerName"
+placeholder="Your Name">
+
+
+<button 
+type="button"
+id="createBtn">
+
+Create Room
+
+</button>
+
+
+
+<div class="divider">
+
+OR
+
+</div>
+
+
+
+<input id="roomInput"
+maxlength="6"
+placeholder="Room Code">
+
+
+<button
+type="button"
+id="joinBtn">
+
+Join Room
+
+</button>
+
+
+</section>
+
+
+
+
+
+<section id="lobby" class="screen hidden">
+
+
+<div class="roomCard">
+
+
+<h2>
+Room
+</h2>
+
+
+<div class="roomCodeBox">
+
+
+<span id="roomCode">
+------
+</span>
+
+
+<button
+type="button"
+id="copyBtn">
+
+📋
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="players">
+
+
+<div class="player">
+
+<div class="avatar blue"></div>
+
+<div>
+
+<strong id="myName">
+You
+</strong>
+
+
+<p>
+Connected
+</p>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="player">
+
+<div class="avatar red"></div>
+
+<div>
+
+
+<strong id="opponentName">
+Waiting...
+</strong>
+
+
+<p id="opponentStatus"
+class="waiting">
+
+Waiting for Player
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section id="secretScreen"
+class="screen hidden">
+
+
+<h2>
+Choose Your Secret Number
+</h2>
+
+
+<div class="display">
+
+<span id="secretDisplay">
+0
+</span>
+
+</div>
+
+
+<div id="secretPad"
+class="numberPad">
+
+</div>
+
+
+
+<button
+type="button"
+id="secretBtn">
+
+Confirm Number
+
+</button>
+
+
+</section>
+
+
+
+
+
+<section id="gameScreen"
+class="screen hidden">
+
+
+<div class="topStatus">
+
+
+<div class="turnCard">
+
+
+<h3 id="hint">
+Waiting...
+</h3>
+
+
+<div id="opponentThinking"
+class="thinking hidden">
+
+<span></span>
+
+Opponent is guessing
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="rangeCard">
+
+<small>
+Range
+</small>
+
+
+<h2>
+
+<span id="minRange">
+0
+</span>
+
+-
+
+<span id="maxRange">
+100
+</span>
+
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="attemptBox">
+
+Attempts
+
+<span id="attempts">
+0
+</span>
+
+
+</div>
+
+
+
+<div class="display">
+
+<span id="guessDisplay">
+0
+</span>
+
+
+</div>
+
+
+
+<div id="guessPad"
+class="numberPad">
+
+</div>
+
+
+
+<button
+type="button"
+id="guessBtn">
+
+Guess
+
+</button>
+
+
+<div id="history"
+class="history">
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section id="winnerScreen"
+class="screen hidden">
+
+
+<div class="winnerCard">
+
+
+<div class="trophy">
+
+🏆
+
+</div>
+
+
+
+<h2 id="winnerText">
+Winner
+</h2>
+
+
+
+<div class="actionButtons">
+
+
+<button
+type="button"
+id="playAgainBtn">
+
+Play Again
+
+</button>
+
+
+
+<button
+type="button"
+id="newRoundBtn">
+
+New Round
+
+</button>
+
+
+
+<button
+type="button"
+id="resetBtn">
+
+Reset Game
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+</div>
+
+
+<script src="app.js"></script>
+
+
+</body>
+
+</html>

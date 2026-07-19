@@ -1,0 +1,1501 @@
+/* ===================================================
+   JOEL'S NUMBER GUESSING GAME
+   PART 1
+=================================================== */
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+
+    width:100%;
+    min-height:100%;
+
+    font-family:"Poppins",sans-serif;
+
+}
+
+body{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#07111f;
+
+    overflow-x:hidden;
+
+    color:white;
+
+}
+
+/* ===================================================
+   BACKGROUND
+=================================================== */
+
+.background{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+        -45deg,
+        #07111f,
+        #0f2c66,
+        #2563eb,
+        #7c3aed
+    );
+
+    background-size:400% 400%;
+
+    animation:gradientMove 14s ease infinite;
+
+    z-index:-10;
+
+}
+
+.background::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    radial-gradient(circle at 15% 25%,
+    rgba(255,255,255,.10),
+    transparent 28%),
+
+    radial-gradient(circle at 85% 75%,
+    rgba(255,255,255,.06),
+    transparent 32%),
+
+    radial-gradient(circle at 50% 40%,
+    rgba(255,255,255,.05),
+    transparent 35%);
+
+}
+
+@keyframes gradientMove{
+
+    0%{
+
+        background-position:0% 50%;
+
+    }
+
+    50%{
+
+        background-position:100% 50%;
+
+    }
+
+    100%{
+
+        background-position:0% 50%;
+
+    }
+
+}
+
+/* ===================================================
+   MAIN CONTAINER
+=================================================== */
+
+.container{
+
+    width:min(480px,95vw);
+
+    min-height:94vh;
+
+    margin:20px;
+
+    padding:24px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.14);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.45);
+
+    overflow:hidden;
+
+}
+
+/* ===================================================
+   HEADER
+=================================================== */
+
+header{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+header h1{
+
+    font-size:2rem;
+
+    font-weight:800;
+
+}
+
+header p{
+
+    margin-top:6px;
+
+    color:#d1d5db;
+
+    font-size:.95rem;
+
+}
+
+/* ===================================================
+   SCREEN
+=================================================== */
+
+.screen{
+
+    animation:fadeIn .35s ease;
+
+}
+
+.hidden{
+
+    display:none;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+/* ===================================================
+   INPUTS
+=================================================== */
+
+input{
+
+    width:100%;
+
+    padding:16px;
+
+    margin:12px 0;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    font-size:16px;
+
+    transition:.25s;
+
+}
+
+input::placeholder{
+
+    color:#d4d4d4;
+
+}
+
+input:focus{
+
+    background:rgba(255,255,255,.18);
+
+    box-shadow:
+
+        0 0 0 3px rgba(59,130,246,.35);
+
+}
+
+/* ===================================================
+   BUTTONS
+=================================================== */
+
+button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:18px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    color:white;
+
+    transition:.25s;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+        0 8px 20px rgba(0,0,0,.25);
+
+}
+
+button:active{
+
+    transform:scale(.97);
+
+}
+
+button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+/* COLORS */
+
+.primary{
+
+    background:#2563eb;
+
+}
+
+.primary:hover{
+
+    background:#1d4ed8;
+
+}
+
+#createBtn{
+
+    background:#2563eb;
+
+}
+
+#joinBtn{
+
+    background:#10b981;
+
+}
+
+#joinBtn:hover{
+
+    background:#059669;
+
+}
+
+#secretBtn{
+
+    background:#f59e0b;
+
+}
+
+#guessBtn{
+
+    background:#8b5cf6;
+
+}
+
+#playAgainBtn{
+
+    background:#22c55e;
+
+}
+
+#newRoundBtn{
+
+    background:#3b82f6;
+
+}
+
+#resetBtn{
+
+    background:#ef4444;
+
+}
+
+/* ===================================================
+   DIVIDER
+=================================================== */
+
+.divider{
+
+    text-align:center;
+
+    margin:18px 0;
+
+    color:#d1d5db;
+
+    font-weight:600;
+
+}
+/* ===================================================
+   JOEL'S NUMBER GUESSING GAME
+   PART 2
+=================================================== */
+
+
+/* ===================================================
+   ROOM CARD
+=================================================== */
+
+.roomCard{
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:20px;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    border:1px solid rgba(255,255,255,.12);
+
+}
+
+
+.roomCard h2{
+
+    font-size:1.2rem;
+
+    margin-bottom:15px;
+
+}
+
+
+
+/* ROOM CODE */
+
+.roomCodeBox{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+}
+
+
+#roomCode{
+
+    flex:1;
+
+    background:rgba(0,0,0,.25);
+
+    padding:15px;
+
+    border-radius:16px;
+
+    font-size:1.5rem;
+
+    letter-spacing:5px;
+
+    font-weight:800;
+
+    color:#60a5fa;
+
+}
+
+
+
+#copyBtn{
+
+    width:55px;
+
+    height:55px;
+
+    padding:0;
+
+    background:#334155;
+
+    font-size:20px;
+
+}
+
+
+
+/* ===================================================
+   PLAYERS
+=================================================== */
+
+
+.players{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+
+.player{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:15px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+}
+
+
+
+.player strong{
+
+    font-size:1rem;
+
+}
+
+
+.player p{
+
+    margin-top:3px;
+
+    color:#cbd5e1;
+
+    font-size:.85rem;
+
+}
+
+
+
+.waiting{
+
+    color:#fbbf24 !important;
+
+}
+
+
+
+/* AVATARS */
+
+
+.avatar{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    position:relative;
+
+}
+
+
+.avatar::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:12px;
+
+    background:white;
+
+    border-radius:50%;
+
+    opacity:.9;
+
+}
+
+
+.blue{
+
+    background:#2563eb;
+
+}
+
+
+.red{
+
+    background:#ef4444;
+
+}
+
+
+
+/* ===================================================
+   NUMBER DISPLAY
+=================================================== */
+
+
+.display{
+
+    width:100%;
+
+    height:90px;
+
+    margin:20px 0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:25px;
+
+    background:rgba(0,0,0,.25);
+
+    border:1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+.display span{
+
+    font-size:3rem;
+
+    font-weight:800;
+
+    color:#60a5fa;
+
+}
+
+
+
+/* ===================================================
+   NUMBER PAD
+=================================================== */
+
+
+.numberPad{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.numberPad button{
+
+    height:60px;
+
+    padding:0;
+
+    background:rgba(255,255,255,.12);
+
+    font-size:1.3rem;
+
+    border-radius:18px;
+
+}
+
+
+
+.numberPad button:hover{
+
+    background:rgba(255,255,255,.22);
+
+}
+
+
+
+/* ===================================================
+   GAME STATUS
+=================================================== */
+
+
+.topStatus{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+
+}
+
+
+
+.turnCard,
+.rangeCard{
+
+    padding:18px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+}
+
+
+
+.turnCard h3{
+
+    font-size:1rem;
+
+}
+
+
+.rangeCard small{
+
+    color:#cbd5e1;
+
+}
+
+
+
+.rangeCard h2{
+
+    margin-top:5px;
+
+    color:#60a5fa;
+
+}
+
+
+
+/* ===================================================
+   ATTEMPTS
+=================================================== */
+
+
+.attemptBox{
+
+    margin-top:18px;
+
+    padding:15px;
+
+    text-align:center;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.08);
+
+    font-weight:600;
+
+}
+
+
+
+#attempts{
+
+    display:inline-block;
+
+    margin-left:8px;
+
+    color:#fbbf24;
+
+    font-size:1.3rem;
+
+}
+
+
+
+/* ===================================================
+   HISTORY
+=================================================== */
+
+
+.history{
+
+    margin-top:20px;
+
+    max-height:150px;
+
+    overflow-y:auto;
+
+}
+
+
+
+.history div{
+
+    padding:12px;
+
+    margin-bottom:8px;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,.08);
+
+    font-size:.9rem;
+
+}
+
+
+
+/* SCROLLBAR */
+
+
+.history::-webkit-scrollbar{
+
+    width:5px;
+
+}
+
+
+.history::-webkit-scrollbar-thumb{
+
+    background:#64748b;
+
+    border-radius:20px;
+
+}
+
+
+
+/* ===================================================
+   WINNER SCREEN
+=================================================== */
+
+
+.winnerCard{
+
+    text-align:center;
+
+    padding:30px 10px;
+
+}
+
+
+
+.trophy{
+
+    font-size:5rem;
+
+    animation:bounce 1.2s infinite;
+
+}
+
+
+
+@keyframes bounce{
+
+    0%,100%{
+
+        transform:translateY(0);
+
+    }
+
+
+    50%{
+
+        transform:translateY(-15px);
+
+    }
+
+}
+
+
+
+#winnerText{
+
+    font-size:2rem;
+
+    margin:15px 0;
+
+}
+
+
+
+/* ACTION BUTTONS */
+
+
+.actionButtons{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+
+
+/* ===================================================
+   MOBILE RESPONSIVE
+=================================================== */
+
+
+@media(max-width:500px){
+
+
+    .container{
+
+        min-height:96vh;
+
+        padding:18px;
+
+        border-radius:25px;
+
+    }
+
+
+    header h1{
+
+        font-size:1.6rem;
+
+    }
+
+
+    .topStatus{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .display{
+
+        height:80px;
+
+    }
+
+
+    .display span{
+
+        font-size:2.5rem;
+
+    }
+
+
+    .numberPad button{
+
+        height:55px;
+
+    }
+
+
+}
+
+
+
+/* ===================================================
+   LOADING EFFECT
+=================================================== */
+
+
+.loading{
+
+    animation:pulse 1s infinite;
+
+}
+
+
+@keyframes pulse{
+
+
+    0%{
+
+        opacity:.5;
+
+    }
+
+
+    50%{
+
+        opacity:1;
+
+    }
+
+
+    100%{
+
+        opacity:.5;
+
+    }
+
+}
+/* ===================================================
+   JOEL'S NUMBER GUESSING GAME
+   PART 3
+=================================================== */
+
+
+/* ===================================================
+   SCREEN TRANSITION
+=================================================== */
+
+.screen{
+
+    animation:screenSlide .4s ease;
+
+}
+
+
+@keyframes screenSlide{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+
+
+/* ===================================================
+   BUTTON GLOW EFFECTS
+=================================================== */
+
+
+#createBtn{
+
+    box-shadow:
+
+    0 10px 25px rgba(37,99,235,.35);
+
+}
+
+
+#joinBtn{
+
+    box-shadow:
+
+    0 10px 25px rgba(16,185,129,.35);
+
+}
+
+
+#secretBtn{
+
+    box-shadow:
+
+    0 10px 25px rgba(245,158,11,.35);
+
+}
+
+
+#guessBtn{
+
+    box-shadow:
+
+    0 10px 25px rgba(139,92,246,.35);
+
+}
+
+
+
+button:hover{
+
+    filter:brightness(1.1);
+
+}
+
+
+
+/* ===================================================
+   NUMBER PAD ENHANCEMENT
+=================================================== */
+
+
+.numberPad button{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+
+
+.numberPad button::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:0;
+
+    height:0;
+
+    background:white;
+
+    opacity:.2;
+
+    border-radius:50%;
+
+    transform:translate(-50%,-50%);
+
+    transition:.4s;
+
+}
+
+
+
+.numberPad button:active::before{
+
+    width:200px;
+
+    height:200px;
+
+}
+
+
+
+/* ===================================================
+   SECRET NUMBER SCREEN
+=================================================== */
+
+
+#secretScreen h2{
+
+    text-align:center;
+
+    margin-bottom:10px;
+
+    font-size:1.4rem;
+
+}
+
+
+
+/* ===================================================
+   RANGE ANIMATION
+=================================================== */
+
+
+.rangeCard h2{
+
+    animation:numberPop .3s ease;
+
+}
+
+
+@keyframes numberPop{
+
+    from{
+
+        transform:scale(.8);
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+
+/* ===================================================
+   WINNER EFFECT
+=================================================== */
+
+
+.winnerCard{
+
+    animation:winnerAppear .6s ease;
+
+}
+
+
+
+@keyframes winnerAppear{
+
+    from{
+
+        transform:scale(.7);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+
+
+.trophy{
+
+    filter:
+
+    drop-shadow(
+
+    0 10px 20px rgba(250,204,21,.5)
+
+    );
+
+}
+
+
+
+/* ===================================================
+   SUCCESS / ERROR STATES
+=================================================== */
+
+
+.success{
+
+    background:#16a34a !important;
+
+}
+
+
+.error{
+
+    background:#dc2626 !important;
+
+}
+
+
+
+.warning{
+
+    background:#d97706 !important;
+
+}
+
+
+
+/* ===================================================
+   TOAST MESSAGE
+=================================================== */
+
+
+.toast{
+
+    position:fixed;
+
+    bottom:30px;
+
+    left:50%;
+
+    transform:
+
+    translateX(-50%)
+    translateY(100px);
+
+
+    background:
+
+    rgba(0,0,0,.75);
+
+
+    padding:15px 25px;
+
+
+    border-radius:50px;
+
+
+    font-size:.9rem;
+
+
+    font-weight:600;
+
+
+    backdrop-filter:blur(10px);
+
+
+    opacity:0;
+
+
+    transition:.35s;
+
+
+    z-index:1000;
+
+}
+
+
+
+.toast.show{
+
+    transform:
+
+    translateX(-50%)
+    translateY(0);
+
+
+    opacity:1;
+
+}
+
+
+
+/* ===================================================
+   CONNECTION STATUS
+=================================================== */
+
+
+.online{
+
+    color:#22c55e !important;
+
+}
+
+
+
+.offline{
+
+    color:#ef4444 !important;
+
+}
+
+
+
+/* ===================================================
+   ROOM CODE COPY BUTTON
+=================================================== */
+
+
+#copyBtn:hover{
+
+    background:#475569;
+
+}
+
+
+
+#copyBtn:active{
+
+    transform:scale(.9);
+
+}
+
+
+
+/* ===================================================
+   GAME HISTORY COLORS
+=================================================== */
+
+
+.history .correct{
+
+    border-left:
+
+    4px solid #22c55e;
+
+}
+
+
+
+.history .high{
+
+    border-left:
+
+    4px solid #ef4444;
+
+}
+
+
+
+.history .low{
+
+    border-left:
+
+    4px solid #3b82f6;
+
+}
+
+
+
+/* ===================================================
+   GLASS HIGHLIGHT
+=================================================== */
+
+
+.container::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:200px;
+
+    height:200px;
+
+    top:-80px;
+
+    right:-80px;
+
+    background:
+
+    rgba(255,255,255,.08);
+
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+}
+
+
+
+/* ===================================================
+   IPHONE SAFE AREA
+=================================================== */
+
+
+@supports(padding:max(0px)){
+
+    body{
+
+        padding:
+
+        max(20px, env(safe-area-inset-top))
+
+        max(20px, env(safe-area-inset-right))
+
+        max(20px, env(safe-area-inset-bottom))
+
+        max(20px, env(safe-area-inset-left));
+
+    }
+
+}
+
+
+
+/* ===================================================
+   LANDSCAPE MOBILE
+=================================================== */
+
+
+@media(max-height:600px){
+
+
+    .container{
+
+        min-height:auto;
+
+    }
+
+
+    header{
+
+        margin-bottom:10px;
+
+    }
+
+
+    .display{
+
+        height:65px;
+
+    }
+
+
+    .numberPad button{
+
+        height:45px;
+
+    }
+
+}
+
+
+
+/* ===================================================
+   ACCESSIBILITY
+=================================================== */
+
+
+button:focus-visible,
+input:focus-visible{
+
+
+    outline:
+
+    3px solid #60a5fa;
+
+
+    outline-offset:3px;
+
+
+}
